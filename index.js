@@ -102,50 +102,50 @@ app.post("/pets", async (req, res) => {
 // curl -X PUT http://localhost:3000/books/1 --header "Content-Type: application/json" --data '{"title": "The book of lost things, again"}'
 app.put("/pets/:id", async (req, res) => {
     const id = parseInt(req.params.id)
-    const { title, author } = req.body
+    const { type, status } = req.body
     try {
 
-        //pengecekan title dan author 
-        if (title === "") {
+        //pengecekan tipe pet dan status adopsi 
+        if (type === "") {
             res.status(422)
-            res.json("title can't be empty if updated!")
+            res.json("type can't be empty if updated!")
             return
         }
 
-        if (author === "") {
+        if (status === "") {
             res.status(422)
-            res.json("author can't be empty if updated!")
+            res.json("status can't be empty if updated!")
             return
         }
 
         // mencari buku terlebih dahulu yang mau diupdate
 
-        const thatBook = await pet.fetchOneData(id)
+        const thatPet = await pet.fetchOneData(id)
 
         //cek jika bukunya tidak ada, memakai array indeks pertama karena hasil fetch data berupa to array
-        if (!thatBook) {
+        if (!thatPet) {
             res.status(404)
-            res.json("Book not found!")
+            res.json("Pet not found!")
             return
         }
 
         // di validasi dulu apakah author diberikan di req.body, kalau tidak, tidak perlu di update biar tidak null hasilnya
-        if (author) {
-            thatBook.author = author
+        if (type) {
+            thatPet.type = type
         }
 
         // title di validasi dulu apakah title diberikan di req.body, kalau tidak, tidak perlu di update biar tidak null hasilnya
-        if (title) {
-            thatBook.title = title
+        if (status) {
+            thatPet.status = status
         }
 
-        await pet.updateData(thatBook)
+        await pet.updateData(thatPet)
 
-        res.json(thatBook);
+        res.json(thatPet);
     } catch (error) {
         res.status(422)
         console.log('error', error)
-        res.json('tidak dapat update buku')
+        res.json('tidak dapat update pet')
     }
 
 })
@@ -156,13 +156,13 @@ app.delete("/pets/:id", async (req, res) => {
     const id = parseInt(req.params.id)
 
     try {
-        // mencari buku terlebih dahulu yang mau diupdate
-        const thatBook = await pet.fetchOneData(id)
+        // mencari pet terlebih dahulu yang mau diupdate
+        const thatPet = await pet.fetchOneData(id)
 
-        //cek jika bukunya tidak ada, memakai array indeks pertama karena hasil fetch data berupa to array
-        if (!thatBook) {
+        //cek jika petnya tidak ada, memakai array indeks pertama karena hasil fetch data berupa to array
+        if (!thatPet) {
             res.status(404)
-            res.json("Book not found!")
+            res.json("Pet not found!")
             return
         }
 
@@ -170,7 +170,7 @@ app.delete("/pets/:id", async (req, res) => {
         res.json(pet);
     } catch (error) {
         res.status(422)
-        res.json('tidak dapat delete buku')
+        res.json('tidak dapat delete Pet')
     }
 
 })

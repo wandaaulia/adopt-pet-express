@@ -78,8 +78,8 @@ async function updateData(pet) {
             { id: pet.id },
             {
                 $set: {
-                    title: pet.title,
-                    author: pet.author
+                    type : pet.type,
+                    status : pet.status
                 }
             }
         )
