@@ -44,4 +44,4 @@ async function postPets() {
     }
 }
 
-seedData()
+postPets()
